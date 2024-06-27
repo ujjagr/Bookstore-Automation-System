@@ -1,0 +1,28 @@
+body{
+    background-color: beige;
+}
+p,
+label {
+  font:
+    1rem 'Fira Sans',
+    sans-serif;
+}
+legend{
+    margin-left: 50px;
+    margin-right: 100px;
+}
+fieldset{
+    margin-left: 50px;
+    margin-right: 100px;
+    
+}
+label{
+    display: inline-block;
+}
+h1{
+    font-size: 40px;
+    text-align: center;
+}
+input {
+  margin: 0.4rem;
+}

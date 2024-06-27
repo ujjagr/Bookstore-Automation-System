@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}
+Bookstore
+{% endblock %}
+
+{% block content %}
+
+{% if modal_value %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Instructions: </h5>
+                </div>
+                <div class="modal-body">
+                    <ol>
+                    <li> Click on Start Shopping. </li>
+                    <li> Login/Register </li>
+                    <li> Search your books </li>
+                    <li> Add to cart </li>
+                    <li> Checkout </li>
+                    <li> Collect your books </li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script >
+    // Use jQuery ready function to trigger the modal when the page loads
+    $(document).ready(function() {
+    $('#exampleModal').modal('show');
+    }); 
+</script>
+
+
+<style>
+.card:hover {
+    transform: scale(1.05); /* Increase the size of the card on hover */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+
+.input-group:hover {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+}
+</style>
+{% endif %}
+
+<div class="container">
+    <h1 class="mb-4 text-center satisfy-regular mt-3 my-text" style="font-size:45px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);">Discover Captivating Reads...</h1>
+    <!-- form for searching a book by author or title -->
+    <div class="text-center">
+    <form method="GET" action="{% url 'search' %}" style="max-width:60%; margin-left:20%;">
+        <div>
+            <label><p style="font-size:20px"><input type="radio" name="search_type" value="title" checked required > Search by Title</p></label>
+            <label><p style="font-size:20px"><input type="radio" name="search_type" value="author" class="ml-5" required> Search by Author </p></label>
+        </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search for your favourite title or author" name="query" value="{{ request.GET.query }}" required>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-sm" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
+    </div>
+
+    {% if normal == 1 %}
+        {% for genre in genres %}
+        <div class="container mx-0 text-center carousal-row">
+            <h3 style="text-transform: capitalize;">{{ genre }}</h3>
+            <div id="slider_{{ forloop.counter }}" class="carousel slide px-5" data-ride="carousel">
+                <div class="carousel-inner">
+                    {% for book in all_books|books_by_genre:genre|slice:":8" %}
+                        {% if forloop.first %}
+                            <div class="carousel-item active">
+                                <div class="row">
+                        {% endif %}
+                        <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                            <div class="card mb-4" style="width:90%;">
+                                <div class="image-container p-1 text-center" style="height: 250px; overflow: hidden;">
+                                        <img class="card-img-top" src="{{ book.image.url }}" alt="{{ book.title }}" style="width: 90%; height: 250px;">
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title" style="white-space: normal; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ book.title }}</h6>
+                                    <p class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; font-size:15px;">Author: {{ book.author }}</p>
+                                    <p class="card-text" style="font-size:15px;">Price: ₹ {{ book.price }}</p>
+                                    {% if book.inventory.stock == 0 %}
+                                        <p class="card-text text-danger" style="font-size:15px;">Out of stock</p>
+                                    {% elif book.inventory.stock > 10 %}
+                                        <p class="card-text text-success" style="font-size:15px;">In stock</p>
+                                    {% else %}
+                                        <p class="card-text" style="color:blue; font-size:15px;">Only {{ book.inventory.stock }} left</p>
+                                    {% endif %}
+
+                                    <a href="{% url 'book_details' book.id %}" class="btn btn-primary">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:4 and not forloop.last %}
+                            </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row">
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                    </div>
+                </div>
+
+                <a class="carousel-control-prev" href="#slider_{{ forloop.counter }}" role="button" data-slide="prev" style="left:-5px;max-width:10px; ">
+                    <img src="{% static 'icon/arrow-left-circle.svg' %}" alt="Previous" style="width: 50px; height: 50px;">
+                </a>
+                <a class="carousel-control-next" href="#slider_{{ forloop.counter }}" role="button" data-slide="next" style="right: -5px;max-width:10px; ">
+                    <img src="{% static 'icon/arrow-right-circle.svg' %}" alt="Next" style="width: 50px; height: 50px;">
+                </a>
+            </div>
+            <hr style="border: 1px solid black;">
+        </div>
+        {% endfor %}
+    {% elif books %}
+        <h3 class="mb-4 text-center">Search Result</h3>
+        <div class="row m-3">
+            {% for book in books %}
+                <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                    <div class="card mb-4" style="width:90%;">
+                        <div class="image-container p-1 text-center" style="height: 250px; overflow: hidden;">
+                                <img class="card-img-top" src="{{ book.image.url }}" alt="{{ book.title }}" style="width: 85%; height: 250px;">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title" style="white-space: normal; height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">{{ book.title }}</h6>
+                            <p class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0; font-size:15px;">Author: {{ book.author }}</p>
+                            <p class="card-text" style="font-size:15px;">Price: ₹ {{ book.price }}</p>
+                            {% if book.inventory.stock == 0 %}
+                                <p class="card-text text-danger" style="font-size:15px;">Out of stock</p>
+                            {% elif book.inventory.stock > 10 %}
+                                <p class="card-text text-success" style="font-size:15px;">In stock</p>
+                            {% else %}
+                                <p class="card-text" style="color:blue; font-size:15px;">Only {{ book.inventory.stock }} left</p>
+                            {% endif %}
+
+                            <a href="{% url 'book_details' book.id %}" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="container-fluid text-center" style="font-size:20px;">OOPS!!! No books found.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+
+{% block footer_content %}
+    <div class="container text-center mb-4">
+        <h3 class="mb-2">Didn't find your book?</h3>
+        <p class="mb-2" style="font-size:26px; font-family:arial;">Request instead!</p>
+        <a href="{% url 'send_procure_request' %}" class="btn btn-success ">Request Now</a>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/login.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+
+<style>
+  
+  .extra-button {
+    margin-top: 10px;
+    margin-left:41%;
+    font-size:15px; 
+    width:19%;
+    background-color:#417690;
+    color:white;
+    border-radius:4px;
+    padding:8px;
+    cursor: pointer;
+
+  }
+  .extra-button:hover {
+    background-color:#205067;
+    
+  }
+  
+</style>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container-fluid">
+<form method="post" action="{% url 'home'%}">
+  {% csrf_token %}
+<button type="submit" class="extra-button">Home</button>
+</form>
+</div>
+{% endblock %}

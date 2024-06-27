@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}
+procure
+{% endblock %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center">Request a Book</h1>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <div class="container">
+    <form class="row g-3 justify-content-center" action="{% url 'send_procure_request' %}" method="post">
+    {% csrf_token %}
+        <div class="col-md-5">
+          <label for="inputphone" class="form-label">Phone Number *</label>
+          <input type="tel" class="form-control" pattern="[0-9]{10}" id="inputphone" name="phone_no" title="Please enter a 10-digit phone number" autocomplete="off" required>
+        </div>
+        <div class="col-md-5">
+          <label for="inputTitle" class="form-label">Book Title *</label>
+          <input type="text" class="form-control" id="inputTitle" name="book_title" placeholder="Introduction to Algorithms-I" required>
+        </div>
+        <div class="col-md-5">
+          <label for="inputAuthor" class="form-label">Author's Name *</label>
+          <input type="text" class="form-control" id="inputAuthor" name="author_name" placeholder="CLRS" required>
+        </div>
+        <div class="col-md-5">
+          <label for="inputGenre" class="form-label">Genre</label>
+          <input type="text" class="form-control" id="inputGenre" name="genre" placeholder="Horror,Science,Fiction ..">
+        </div>
+        <div class="col-md-5">
+          <label for="inputPublisher" class="form-label">Publisher's Name *</label>
+          <input type="text" class="form-control" id="inputPublisher" name="book_publisher" required>
+        </div>
+        
+        <div class="col-md-5">
+          <label for="inputISBN" class="form-label">ISBN</label>
+          <input type="text" class="form-control" id="inputISBN" name="book_isbn" maxlength="13">
+        </div>
+        
+        <div class="col-12 text-center" style="margin-top:15px">
+          <button type="submit" class="btn btn-primary">Request</button>
+        </div>
+
+      </form>
+      </div>
+    </div>
+
+{% endblock %}

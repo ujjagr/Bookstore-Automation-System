@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for additional styling -->
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px; /* Add padding for better spacing */
+        }
+        .bill-content {
+            max-width: 800px; /* Set maximum width for better readability */
+            margin: 0 auto; /* Center the content horizontally */
+        }
+        .btn-exit {
+            margin-top: 20px; /* Add margin to the exit button */
+        }
+    </style>
+</head>
+<body>
+    <h1 class="container text-center" style="text-decoration:underline">Bookshop</h1>
+    <div class="container bill-content">
+        <h2 class="mt-4 mb-3">Bill Details</h2>
+        <p>Date: {{ bill_date }}</p><p class="float-right">GSTIN:78779898989</p>
+        <p>Time: {{ bill_time }}</p>
+        <p>Buyer Name: {{ buyer_name }}</p>
+        
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Author</th>
+                    <th>Quantity</th>
+                    <th>Rack Number</th>
+                    <th>Total Amount(₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cart_item in cart_items %}
+                <tr>
+                    <td>{{ cart_item.book.title }}</td>
+                    <td>{{ cart_item.book.author }}</td>
+                    <td>{{ cart_item.quantity }}</td>
+                    <td>{{ cart_item.book.inventory.rack_number }}</td>
+                    <td>{{ cart_item.revenue}}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-3">Total Amount: ₹{{ total_price }}</div>
+        <p>Bill has been sent to your email.</p>
+        <form action="{% url 'home' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary btn-exit">Exit Transaction</button>
+        </form>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends "admin/change_list.html" %}
+
+{% block result_list %}
+    {{block.super}}
+    <tfoot>
+        <tr class="text-right" >
+            <td colspan="{{ cl.result_headers|length }}">
+                <h1 style="font-size:30px; text-align:center;">
+                    Total Revenue: ₹{{total_revenue}}
+                </h1>
+            </td>
+        </tr>
+    </tfoot>
+    <div>
+        <h1 style="font-size:40px; text-align:center; font-family:arial;text-decoration:underline;">Statistics</h1>
+    </div>
+    {% if graph_data %}
+        <div>
+            <img src="data:image/png;base64,{{ graph_data }}" alt="Revenue Graph" style="display: block; margin-left:auto; margin-right:auto; width: 80%;">
+        </div>
+    {% endif %}
+{% endblock %}

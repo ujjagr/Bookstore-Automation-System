@@ -1,0 +1,47 @@
+/* Add custom styles */
+body {
+    background-color: #f5f5f5;
+}
+
+.carousel {
+    height: 100vh;
+}
+
+.carousel-item {
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.carousel-item img {
+    display: none;
+}
+
+.carousel-inner {
+    height: 100%;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-primary:hover {
+    background-color: #3e8e41;
+    border-color: #3e8e41;
+}
+
+.white{
+    color:white;
+}
